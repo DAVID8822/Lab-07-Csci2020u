@@ -36,7 +36,9 @@ public class Main extends Application {
 
 
     public void drawPieGraph(TreeMap<String,Integer> map, Color[] colors, File filename) throws IOException {
-
+        double[] angle = new double[map.size()];
+        double total = 0;
+        double initAngle = 0.0;
         BufferedReader reader = new BufferedReader(new FileReader(filename));
         String line;
         while ((line = reader.readLine()) != null) {
@@ -51,8 +53,6 @@ public class Main extends Application {
             }
         }
         reader.close();
-        double[] angle = new double[map.size()];
-        double total = 0;
         for (String key : map.keySet()) {
             total += map.get(key);
         }
@@ -61,11 +61,11 @@ public class Main extends Application {
             angle[i] = ((double) map.get(key) / total) * 360;
             i++;
         }
-        double startAngle = 0.0;
+
         for (i =0; i < map.size(); i++) {
             gc.setFill(colors[i]);
-            gc.fillArc(500,0.0,250,250,startAngle,angle[i], ArcType.ROUND);
-            startAngle += angle[i];
+            gc.fillArc(500,0.0,250,250,initAngle,angle[i], ArcType.ROUND);
+            initAngle += angle[i];
 
         }
     }
